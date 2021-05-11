@@ -1,0 +1,36 @@
+{
+  "name": "chot",
+  "version": "1.0.0",
+  "description": "An interactive trainer for chess openings",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "budo src/index.js:bundle.js --live",
+    "build": "browserify src/index.js -o bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awill039/chot.git"
+  },
+  "keywords": [
+    "chess",
+    "train",
+    "training",
+    "opening",
+    "openings"
+  ],
+  "author": "awill039",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/awill039/chot/issues"
+  },
+  "homepage": "https://github.com/awill039/chot#readme",
+  "devDependencies": {
+    "budo": "^11.6.4"
+  },
+  "dependencies": {
+    "@chrisoakman/chessboardjs": "^1.0.0",
+    "chess.js": "^0.11.0",
+    "jquery": "^3.6.0"
+  }
+}
