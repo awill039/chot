@@ -4,9 +4,11 @@
 // ----- color: a string either 'white' or 'black' representing the last side to move
 //        (color may be redundent since the FEN string already contains whose turn is next)
 class Opening {
-    constructor (type, title, position, color, acceptableNames) {
+    constructor (type, title, moves, positionSteps, position, color, acceptableNames) {
         this.type = type
         this.title = title
+        this.moves = moves
+        this.positionSteps = positionSteps
         this.position = position
         this.color = color
         this.acceptableNames = acceptableNames
