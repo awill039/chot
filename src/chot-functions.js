@@ -18,9 +18,29 @@ exports.createLibrary = (l) => {
 exports.getNewPosition = (game, library) => {
     // Pick a random position from the available positions
     const index = Math.floor(Math.random() * game.availableIndices.length)
-    game.currentIndex = game.availableIndices[index]
+    game.libraryIndex = game.availableIndices[index]
     game.availableIndices.splice(index, 1)
-    game.currentOpening = library[game.currentIndex]
+    game.currentOpening = library[game.libraryIndex]
+}
+
+exports.getNewQuiz = (game, library) => {
+    exports.getNewPosition(game, library)
+    game.board.orientation(game.currentOpening.color)
+    game.board.position(game.currentOpening.position)
+}
+
+exports.getNewChallenge = (game, library, console={}) => {
+    game.gotCorrect = false
+    game.moveIndex = 0
+    exports.getNewPosition(game, library)
+    game.board.position('start')
+    game.board.orientation(game.currentOpening.color)
+    if (game.currentOpening.color === 'black') {
+        game.board.move(game.currentOpening.getMove(game.moveIndex))
+    }
+    if (console) {
+        console.text(`Produce the ${game.currentOpening.title} opening.`)
+    }
 }
 
 exports.cleanGuess = (guess) => {
@@ -31,13 +51,16 @@ exports.cleanGuess = (guess) => {
     return g
 }
 
-exports.initGame = (game, library) => {
-    // Perhaps I should be building an array of indices that point to the correct type
+exports.initGame = (game, library, console={}) => {
     game.availableIndices = []
     library.forEach((opening, index) => {
-        if (opening.type === game.openingType) {
+        if (game.openingType === 'all' || opening.type === game.openingType) {
             game.availableIndices.push(index)
         }
     })
-    exports.getNewPosition(game, library)
+    if (game.trainingType === 'quiz') {
+        exports.getNewQuiz(game, library)
+    } else if (game.trainingType === 'challenge') {
+        exports.getNewChallenge(game, library, console)
+    }
 }

@@ -14,6 +14,22 @@ class Opening {
         this.acceptableNames = acceptableNames
         this.acceptableNames.push(this.title.toLowerCase())
     }
+    checkPosition(index, position) {
+        if (index >= this.positionSteps.length) {
+            return false
+        } else {
+            const p = this.positionSteps[index].split(' ')[0]
+            return p === position
+        }
+    }
+    getMove(index) {
+        const move = this.moves[index]
+        if (move) {
+            return move
+        } else {
+            return -1
+        }
+    }
 }
 
 module.exports = Opening
