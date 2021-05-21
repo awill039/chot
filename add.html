@@ -37,18 +37,8 @@
             const $color = $('#color-type')
             const moves = []
             const positionSteps = []
-            //let opening = {
-                //type: '',
-                //title: '',
-                //moves: [],
-                //positionSteps: [],
-                //position: '',
-                //color: '',
-                //acceptableNames: []
-            //}
 
             function onDrop (source, target, piece, newPos, oldPos, orientation) {
-                console.log(piece)
                 if (($color.val() === 'white' && piece.search(/^b/) !== -1) ||
                     ($color.val() === 'black' && piece.search(/^w/) !== -1)) {
                     moves.push(`${source}-${target}`)
@@ -71,26 +61,18 @@
 
             $('#add-form').on('submit', (e) => {
                 e.preventDefault()
-                try {
-                    const opening = new Opening($('#opening-type').val(),
-                                                $('input').first().val(),
-                                                moves,
-                                                positionSteps,
-                                                board.fen(),
-                                                $('#color-type').val(),
-                                                [])
-                    //opening.type = $('#opening-type').val()
-                    //opening.title = $('input').first().val()
-                    //opening.position = board.fen()
-                    //opening.color = $('#color-type').val()
-                    console.log(JSON.stringify(opening))
-                    console.log(opening.toString())
-                    moves.length = 0
-                    positionSteps.length = 0
-                    $('input').first().val('')
-                } catch (e) {
-                    console.log(e)
-                }
+                const opening = new Opening($('#opening-type').val(),
+                                            $('input').first().val(),
+                                            moves,
+                                            positionSteps,
+                                            board.fen(),
+                                            $color.val(),
+                                            [])
+                console.log(opening.toString())
+                moves.length = 0
+                positionSteps.length = 0
+                $('input').first().val('')
+                board.start()
             })
         </script>
     </body>

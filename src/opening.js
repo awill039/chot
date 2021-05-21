@@ -17,7 +17,6 @@ class Opening {
     toString() {
         let ms = ''
         let ps = ''
-        let as = ''
         this.moves.forEach((m, i) => {
             if (i === 0) {
                 ms += `'${m}'`
@@ -32,21 +31,14 @@ class Opening {
                 ps += `,\n'${p}'`
             }
         })
-        this.acceptableNames.forEach((a, i) => {
-            if (i === 0) {
-                as += `'${a}'`
-            } else {
-                as += `, '${a}'`
-            }
-        })
-        return `},{
+        return `}, {
                     \ttype: '${this.type}',
                     \ttitle: '${this.title}',
                     \tmoves: [${ms}],
                     \tpositionSteps: [${ps}],
                     \tposition: '${this.position}',
                     \tcolor: '${this.color}',
-                    \tacceptableNames: [${as}]`
+                    \tacceptableNames: []`
     }
     checkPosition(index, position) {
         if (index >= this.positionSteps.length) {
