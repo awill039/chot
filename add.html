@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Print Tool for Opening Trainer</title>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
+            crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
+            integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD"
+            crossorigin="anonymous"></script>
+        <link rel="stylesheet"
+            href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
+            integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU"
+            crossorigin="anonymous">
+    </head>
+    <body>
+        <div id="board" style="width: 480px"></div>
+        <span>Opening Type:</span>
+        <select id="opening-type">
+          <option value="e4">e4</option>
+          <option value="d4">d4</option>
+          <option value="other">other</option>
+          <option value="all">All</option>
+        </select>
+        <span>Color:</span>
+        <select id="color-type">
+            <option value="white">white</option>
+            <option value="black">black</option>
+        </select>
+        <form id="add-form">
+            <input type="text" placeholder="title">
+            <input type="submit">
+        </form>
+        <script>
+            const $color = $('#color-type')
+            let opening = {
+                type: '',
+                title: '',
+                moves: [],
+                positionSteps: [],
+                position: '',
+                color: '',
+                acceptableNames: []
+            }
+
+            function onDrop (source, target, piece, newPos, oldPos, orientation) {
+                console.log(piece)
+                if (($color.val() === 'white' && piece.search(/^b/) !== -1) ||
+                    ($color.val() === 'black' && piece.search(/^w/) !== -1)) {
+                    opening.moves.push(`${source}-${target}`)
+                }
+
+                if (($color.val() === 'white' && piece.search(/^w/) !== -1) ||
+                    ($color.val() === 'black' && piece.search(/^b/) !== -1)) {
+                    opening.positionSteps.push(Chessboard.objToFen(newPos))
+                }
+            }
+
+            let config = {
+                draggable: true,
+                dropOffBoard: 'snapback',
+                position: 'start',
+                onDrop: onDrop
+            }
+
+            const board = Chessboard('board', config)
+
+            $('#add-form').on('submit', (e) => {
+                opening.type = $('#opening-type').val()
+                opening.title = $('input').first().val()
+                opening.position = board.fen()
+                opening.color = $('#color-type').val()
+                console.log(JSON.stringify(opening))
+                console.log(opening)
+                opening.type = ''
+                opening.title = ''
+                opening.move = []
+                opening.positionSteps = []
+                opening.position = ''
+                opening.color = ''
+                $('input').first().val('')
+                e.preventDefault()
+            })
+        </script>
+    </body>
+</html>
