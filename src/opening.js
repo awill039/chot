@@ -14,6 +14,40 @@ class Opening {
         this.acceptableNames = acceptableNames
         this.acceptableNames.push(this.title.toLowerCase())
     }
+    toString() {
+        let ms = ''
+        let ps = ''
+        let as = ''
+        this.moves.forEach((m, i) => {
+            if (i === 0) {
+                ms += `'${m}'`
+            } else {
+                ms += `, '${m}'`
+            }
+        })
+        this.positionSteps.forEach((p, i) => {
+            if (i === 0) {
+                ps += `'${p}'`
+            } else {
+                ps += `,\n'${p}'`
+            }
+        })
+        this.acceptableNames.forEach((a, i) => {
+            if (i === 0) {
+                as += `'${a}'`
+            } else {
+                as += `, '${a}'`
+            }
+        })
+        return `},{
+                    \ttype: '${this.type}',
+                    \ttitle: '${this.title}',
+                    \tmoves: [${ms}],
+                    \tpositionSteps: [${ps}],
+                    \tposition: '${this.position}',
+                    \tcolor: '${this.color}',
+                    \tacceptableNames: [${as}]`
+    }
     checkPosition(index, position) {
         if (index >= this.positionSteps.length) {
             return false
@@ -32,4 +66,6 @@ class Opening {
     }
 }
 
-module.exports = Opening
+if (typeof module !== 'undefined') {
+    module.exports = Opening
+}

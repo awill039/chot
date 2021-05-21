@@ -13,6 +13,7 @@
             href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
             integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU"
             crossorigin="anonymous">
+        <script src="src/opening.js"></script>
     </head>
     <body>
         <div id="board" style="width: 480px"></div>
@@ -34,26 +35,28 @@
         </form>
         <script>
             const $color = $('#color-type')
-            let opening = {
-                type: '',
-                title: '',
-                moves: [],
-                positionSteps: [],
-                position: '',
-                color: '',
-                acceptableNames: []
-            }
+            const moves = []
+            const positionSteps = []
+            //let opening = {
+                //type: '',
+                //title: '',
+                //moves: [],
+                //positionSteps: [],
+                //position: '',
+                //color: '',
+                //acceptableNames: []
+            //}
 
             function onDrop (source, target, piece, newPos, oldPos, orientation) {
                 console.log(piece)
                 if (($color.val() === 'white' && piece.search(/^b/) !== -1) ||
                     ($color.val() === 'black' && piece.search(/^w/) !== -1)) {
-                    opening.moves.push(`${source}-${target}`)
+                    moves.push(`${source}-${target}`)
                 }
 
                 if (($color.val() === 'white' && piece.search(/^w/) !== -1) ||
                     ($color.val() === 'black' && piece.search(/^b/) !== -1)) {
-                    opening.positionSteps.push(Chessboard.objToFen(newPos))
+                    positionSteps.push(Chessboard.objToFen(newPos))
                 }
             }
 
@@ -67,20 +70,27 @@
             const board = Chessboard('board', config)
 
             $('#add-form').on('submit', (e) => {
-                opening.type = $('#opening-type').val()
-                opening.title = $('input').first().val()
-                opening.position = board.fen()
-                opening.color = $('#color-type').val()
-                console.log(JSON.stringify(opening))
-                console.log(opening)
-                opening.type = ''
-                opening.title = ''
-                opening.move = []
-                opening.positionSteps = []
-                opening.position = ''
-                opening.color = ''
-                $('input').first().val('')
                 e.preventDefault()
+                try {
+                    const opening = new Opening($('#opening-type').val(),
+                                                $('input').first().val(),
+                                                moves,
+                                                positionSteps,
+                                                board.fen(),
+                                                $('#color-type').val(),
+                                                [])
+                    //opening.type = $('#opening-type').val()
+                    //opening.title = $('input').first().val()
+                    //opening.position = board.fen()
+                    //opening.color = $('#color-type').val()
+                    console.log(JSON.stringify(opening))
+                    console.log(opening.toString())
+                    moves.length = 0
+                    positionSteps.length = 0
+                    $('input').first().val('')
+                } catch (e) {
+                    console.log(e)
+                }
             })
         </script>
     </body>
